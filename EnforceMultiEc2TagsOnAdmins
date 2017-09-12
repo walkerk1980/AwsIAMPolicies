@@ -1,0 +1,47 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "EnforceEnvironmentTag",
+            "Effect": "Deny",
+            "Action": "ec2:RunInstances",
+            "Resource": [
+                "arn:aws:ec2:*:123456789012:instance/*",
+                "arn:aws:ec2:*:123456789012:volume/*"
+            ],
+            "Condition": {
+                "StringNotEquals": {
+                    "aws:RequestTag/Environment": "Production"
+                }
+            }
+        },
+        {
+            "Sid": "EnforceProjectTagFormat_prj-001",
+            "Effect": "Deny",
+            "Action": "ec2:RunInstances",
+            "Resource": [
+                "arn:aws:ec2:*:123456789012:instance/*",
+                "arn:aws:ec2:*:123456789012:volume/*"
+            ],
+            "Condition": {
+                "StringNotLike": {
+                    "aws:RequestTag/Project": "prj-*"
+                }
+            }
+        },
+        {
+            "Sid": "EnforceOwnerTag",
+            "Effect": "Deny",
+            "Action": "ec2:RunInstances",
+            "Resource": [
+                "arn:aws:ec2:*:123456789012:instance/*",
+                "arn:aws:ec2:*:123456789012:volume/*"
+            ],
+            "Condition": {
+                "StringNotLike": {
+                    "aws:RequestTag/Owner": "${aws:username}"
+                }
+            }
+        }
+    ]
+}
