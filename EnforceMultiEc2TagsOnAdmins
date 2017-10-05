@@ -53,7 +53,7 @@
             ],
             "Condition": {
                 "StringNotLike": {
-                    "aws:RequestTag/Project": "*"
+                    "aws:RequestTag/Project": "?*"
                 }
             }
         },
