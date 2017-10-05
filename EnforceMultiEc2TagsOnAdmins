@@ -29,7 +29,7 @@
                 }
             }
         },
-                {
+        {
             "Sid": "EnforceProjectTagFormat_prj-*",
             "Effect": "Deny",
             "Action": "ec2:RunInstances",
