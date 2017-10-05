@@ -30,6 +30,34 @@
             }
         },
         {
+            "Sid": "EnforceTagExistsCanBeNull",
+            "Effect": "Deny",
+            "Action": "ec2:RunInstances",
+            "Resource": [
+                "arn:aws:ec2:*:123456789012:instance/*",
+                "arn:aws:ec2:*:123456789012:volume/*"
+            ],
+            "Condition": {
+                "StringNotLike": {
+                    "aws:RequestTag/Project": "*"
+                }
+            }
+        },
+        {
+            "Sid": "EnforceTagExistsMustNotBeNull",
+            "Effect": "Deny",
+            "Action": "ec2:RunInstances",
+            "Resource": [
+                "arn:aws:ec2:*:123456789012:instance/*",
+                "arn:aws:ec2:*:123456789012:volume/*"
+            ],
+            "Condition": {
+                "StringNotLike": {
+                    "aws:RequestTag/Project": "*"
+                }
+            }
+        },
+        {
             "Sid": "EnforceOwnerTag",
             "Effect": "Deny",
             "Action": "ec2:RunInstances",
