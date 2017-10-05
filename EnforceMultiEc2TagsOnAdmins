@@ -25,6 +25,20 @@
             ],
             "Condition": {
                 "StringNotLike": {
+                    "aws:RequestTag/Project": "prj-???"
+                }
+            }
+        },
+                {
+            "Sid": "EnforceProjectTagFormat_prj-*",
+            "Effect": "Deny",
+            "Action": "ec2:RunInstances",
+            "Resource": [
+                "arn:aws:ec2:*:123456789012:instance/*",
+                "arn:aws:ec2:*:123456789012:volume/*"
+            ],
+            "Condition": {
+                "StringNotLike": {
                     "aws:RequestTag/Project": "prj-*"
                 }
             }
