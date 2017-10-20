@@ -2,21 +2,25 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "EnforceEnvironmentTag",
+            "Sid": "EnforceEnvironmentTagWithOneOfSpecifiedValue",
             "Effect": "Allow",
             "Action": "ec2:RunInstances",
             "Resource": [
-                "arn:aws:ec2:*:123456789012:instance/*",
-                "arn:aws:ec2:*:123456789012:volume/*"
+                "arn:aws:ec2:*:*:instance/*",
+                "arn:aws:ec2:*:*:volume/*"
             ],
             "Condition": {
-                "StringEquals": {
-                    "aws:RequestTag/Environment": "Production"
+                "ForAnyValue:StringEquals": {
+                    "aws:RequestTag/Environment": [
+                        "Dev",
+                        "Test",
+                        "Prod"
+                    ]
                 }
             }
         },
         {
-            "Sid": "EnforceProjectTagFormat_prj-001",
+            "Sid": "EnforceProjectTagSpecificFormatPrjDash001",
             "Effect": "Allow",
             "Action": "ec2:RunInstances",
             "Resource": [
@@ -30,12 +34,12 @@
             }
         },
         {
-            "Sid": "EnforceProjectTagFormat_prj-*",
+            "Sid": "EnforceProjectTagFormatPrjDashWildcard",
             "Effect": "Allow",
             "Action": "ec2:RunInstances",
             "Resource": [
-                "arn:aws:ec2:*:123456789012:instance/*",
-                "arn:aws:ec2:*:123456789012:volume/*"
+                "arn:aws:ec2:*:*:instance/*",
+                "arn:aws:ec2:*:*:volume/*"
             ],
             "Condition": {
                 "StringLike": {
@@ -44,12 +48,12 @@
             }
         },
         {
-            "Sid": "EnforceTagExistsCanBeNull",
+            "Sid": "EnforceTagExistsValueCanBeNull",
             "Effect": "Allow",
             "Action": "ec2:RunInstances",
             "Resource": [
-                "arn:aws:ec2:*:123456789012:instance/*",
-                "arn:aws:ec2:*:123456789012:volume/*"
+                "arn:aws:ec2:*:*:instance/*",
+                "arn:aws:ec2:*:*:volume/*"
             ],
             "Condition": {
                 "StringLike": {
@@ -58,12 +62,12 @@
             }
         },
         {
-            "Sid": "EnforceTagExistsMustNotBeNull",
+            "Sid": "EnforceTagExistsValueMustNotBeNull",
             "Effect": "Allow",
             "Action": "ec2:RunInstances",
             "Resource": [
-                "arn:aws:ec2:*:123456789012:instance/*",
-                "arn:aws:ec2:*:123456789012:volume/*"
+                "arn:aws:ec2:*:*:instance/*",
+                "arn:aws:ec2:*:*:volume/*"
             ],
             "Condition": {
                 "StringLike": {
@@ -72,16 +76,79 @@
             }
         },
         {
-            "Sid": "EnforceOwnerTag",
+            "Sid": "EnforceUserNameTag",
             "Effect": "Allow",
             "Action": "ec2:RunInstances",
             "Resource": [
-                "arn:aws:ec2:*:123456789012:instance/*",
-                "arn:aws:ec2:*:123456789012:volume/*"
+                "arn:aws:ec2:*:*:instance/*",
+                "arn:aws:ec2:*:*:volume/*"
             ],
             "Condition": {
                 "StringLike": {
                     "aws:RequestTag/Owner": "${aws:username}"
+                }
+            }
+        },
+        {
+            "Sid": "EnforceUserIDTagFederatedUser",
+            "Effect": "Allow",
+            "Action": "ec2:RunInstances",
+            "Resource": [
+                "arn:aws:ec2:*:*:instance/*",
+                "arn:aws:ec2:*:*:volume/*"
+            ],
+            "Condition": {
+                "StringLike": {
+                    "aws:RequestTag/Owner": "FederadedRoleID:${aws:userid}"
+                }
+            }
+        },
+        {
+            "Sid": "RequiredRunInstancesPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:RunInstances"
+            ],
+            "Resource": [
+                "arn:aws:ec2:*::image/*",
+                "arn:aws:ec2:*:*:security-group/*",
+                "arn:aws:ec2:*:*:network-interface/*",
+                "arn:aws:ec2:*:*:subnet/*",
+                "arn:aws:ec2:*:*:key-pair/*"
+            ]
+        },
+        {
+            "Sid": "RequiredConsolePermissions",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:Describe*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "RequiredTaggingPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateTags"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "TheseActionsSupportResourceLevelPermissionsWithInstancesAndTags",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:TerminateInstances",
+                "ec2:StopInstances",
+                "ec2:StartInstances"
+            ],
+            "Resource": "arn:aws:ec2:*:*:instance/*",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:ResourceTag/Environment": [
+                        "Dev",
+                        "Test",
+                        "Prod"
+                    ]
                 }
             }
         }
