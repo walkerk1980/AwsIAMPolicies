@@ -130,9 +130,12 @@
         {
             "Sid": "RequiredTaggingPermissions",
             "Effect": "Allow",
-            "Action": [
-                "ec2:CreateTags"
-            ],
+            "Action": "ec2:CreateTags",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:CreateAction": "RunInstances"
+                }
+            },
             "Resource": "*"
         },
         {
