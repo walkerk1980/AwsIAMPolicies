@@ -98,7 +98,7 @@
                 "arn:aws:ec2:*:*:volume/*"
             ],
             "Condition": {
-                "ForAnyValue:StringLike": {
+                "StringEquals": {
                     "aws:RequestTag/Owner": [
                         "${aws:userid}"
                     ]
