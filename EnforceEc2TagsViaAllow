@@ -90,7 +90,7 @@
             }
         },
         {
-            "Sid": "EnforceUserIDTagFederatedUser",
+            "Sid": "EnforceUserIDTagSAMLFederatedUserFormatAssumedRoleIDColonRoleSessionName",
             "Effect": "Allow",
             "Action": "ec2:RunInstances",
             "Resource": [
@@ -98,8 +98,10 @@
                 "arn:aws:ec2:*:*:volume/*"
             ],
             "Condition": {
-                "StringLike": {
-                    "aws:RequestTag/Owner": "FederadedRoleID:${aws:userid}"
+                "ForAnyValue:StringLike": {
+                    "aws:RequestTag/Owner": [
+                        "${aws:userid}"
+                    ]
                 }
             }
         },
