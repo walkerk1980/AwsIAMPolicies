@@ -2,6 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
+            "Sid": "BothOfTheseStatementsDoTheSameThing",
             "Effect": "Allow",
             "Action": [
                 "ec2:CreateTags"
@@ -12,6 +13,21 @@
             "Condition": {
                 "ArnLike": {
                     "ec2:SourceInstanceARN": "arn:aws:ec2:*:*:${aws:resource}"
+                }
+            }
+        },
+        {
+            "Sid": "SecondWayToDoSameThing",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateTags"
+            ],
+            "Resource": [
+                "*"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:ARN": "${ec2:SourceInstanceARN}"
                 }
             }
         }
