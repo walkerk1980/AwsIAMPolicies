@@ -1,0 +1,28 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "ActionsThatDontSupportResourceLevelPerms",
+            "Effect": "Allow",
+            "Action": [
+                "lambda:ListFunctions",
+                "lambda:ListVersionsByFunction",
+                "lambda:ListEventSourceMappings",
+                "lambda:GetAccountSettings",
+                "lambda:ListTags"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "ActionsThatDoSupportResourceLevelPerms",
+            "Effect": "Allow",
+            "Action": [
+                "lambda:*"
+            ],
+            "Resource": [
+                "arn:aws:lambda:*:*:function:$ {aws:username}-*",
+                "arn:aws:lambda:*:*:function:$ {aws:userid}-*"
+            ]
+        }
+    ]
+}
